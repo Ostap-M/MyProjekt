@@ -5,13 +5,19 @@ import java.util.List;
 
 public class BudgetManager {
     private List<Transaction> transactions;
+    private static int transactionCount = 0;
 
     public BudgetManager() {
-        this.transactions = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
+        transactionCount++;
+    }
+
+    public static int getTransactionCount() {
+        return transactionCount;
     }
 
     public double getBalance() {

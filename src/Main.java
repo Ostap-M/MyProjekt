@@ -21,7 +21,7 @@ public class Main {
             System.out.println("0. Wyjście");
             System.out.print("Wybierz opcję: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // enter skip
+            scanner.nextLine();
 
             switch (choice) {
                 case 1 -> {
@@ -40,9 +40,10 @@ public class Main {
                         String typeInput = scanner.nextLine().toUpperCase();
                         Transaction.Type type = Transaction.Type.valueOf(typeInput);
 
-                        Transaction transaction = new Transaction(title, amount, category, LocalDate.now(), type);
+                        Transaction transaction = new RecurringTransaction(title, amount, category, LocalDate.now(), type, 30);
                         manager.addTransaction(transaction);
                         System.out.println("Dodano transakcję.");
+                        System.out.println("Łączna liczba transakcji: " + BudgetManager.getTransactionCount());
 
                     } catch (InvalidTransactionException e) {
                         System.out.println("Błąd: " + e.getMessage());

@@ -1,6 +1,11 @@
 import java.time.LocalDate;
 
-public class Transaction {
+public class Transaction implements Printable {
+    @Override
+    public void print() {
+
+    }
+
     public enum Type { INCOME, EXPENSE }
 
     private String title;
@@ -9,7 +14,7 @@ public class Transaction {
     private LocalDate date;
     private Type type;
 
-    // Конструктор з перевірками — кидає власний виняток
+
     public Transaction(String title, double amount, String category, LocalDate date, Type type) throws InvalidTransactionException {
         if (title == null || title.isBlank()) {
             throw new InvalidTransactionException("Nazwa nie może być pusta.");
@@ -28,7 +33,7 @@ public class Transaction {
         this.type = type;
     }
 
-    // Геттери
+
     public String getTitle() {
         return title;
     }
@@ -49,7 +54,7 @@ public class Transaction {
         return type;
     }
 
-    // Для виводу
+
     @Override
     public String toString() {
         return "[" + date + "] " + type + " | " + title + " (" + category + "): " + amount + " zł";
