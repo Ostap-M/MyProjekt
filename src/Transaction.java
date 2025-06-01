@@ -1,6 +1,8 @@
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Transaction implements Printable {
+public class Transaction implements Printable, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override
     public void print() {
 

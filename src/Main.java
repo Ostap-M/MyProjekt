@@ -6,6 +6,23 @@ public class Main {
         BudgetManager manager = new BudgetManager();
         Scanner scanner = new Scanner(System.in);
 
+
+        Category food = new Category("Jedzenie");
+        Category groceries = new Category("Spożywcze");
+        Category restaurants = new Category("Restauracje");
+
+        food.addSubcategory(groceries);
+        food.addSubcategory(restaurants);
+
+        Category root = new Category("Wszystkie");
+        root.addSubcategory(food);
+        root.addSubcategory(new Category("Transport"));
+
+        System.out.println("📁 Struktura kategorii:");
+        root.printHierarchy("");
+
+        System.out.println("🔢 Liczba wszystkich kategorii: " + root.countAllCategories());
+
         while (true) {
             System.out.println("\n=== MENU ===");
             System.out.println("1. Dodaj transakcję");
@@ -18,6 +35,11 @@ public class Main {
             System.out.println("8. Filtruj po typie transakcji");
             System.out.println("9. Usuń transakcję");
             System.out.println("10. Edytuj transakcję");
+            System.out.println("11. Statystyki wg kategorii");
+            System.out.println("12. Sortuj wg daty");
+            System.out.println("13. Sortuj wg kwoty");
+            System.out.println("14. Zapisz binarnie");
+            System.out.println("15. Wczytaj binarnie");
             System.out.println("0. Wyjście");
             System.out.print("Wybierz opcję: ");
             int choice = scanner.nextInt();
@@ -44,6 +66,8 @@ public class Main {
                         manager.addTransaction(transaction);
                         System.out.println("Dodano transakcję.");
                         System.out.println("Łączna liczba transakcji: " + BudgetManager.getTransactionCount());
+                        Box<Transaction> box = new Box<>(transaction);
+                        System.out.println("Test generycznego Box<T>: " + box);
 
                     } catch (InvalidTransactionException e) {
                         System.out.println("Błąd: " + e.getMessage());
@@ -113,6 +137,19 @@ public class Main {
                         System.out.println("Niepoprawny typ transakcji.");
                     }
                 }
+                case 11 -> manager.showCategoryStats();
+                case 12 -> manager.sortByDateDescending();
+                case 13 -> manager.sortByAmountDescending();
+                case 14 -> {
+                    System.out.print("Podaj nazwę pliku (np. dane.dat): ");
+                    String file = scanner.nextLine();
+                    manager.saveBinary(file);
+                }
+                case 15 -> {
+                    System.out.print("Podaj nazwę pliku (np. dane.dat): ");
+                    String file = scanner.nextLine();
+                    manager.loadBinary(file);
+                }
 
                 case 0 -> {
                     System.out.println("Do widzenia!");
@@ -122,4 +159,5 @@ public class Main {
             }
         }
     }
+
 }

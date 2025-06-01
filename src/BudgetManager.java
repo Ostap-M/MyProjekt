@@ -129,4 +129,37 @@ public class BudgetManager {
         }
         if (!found) System.out.println("Brak transakcji typu " + type);
     }
+    public void showCategoryStats() {
+        var stats = TransactionStats.sumByCategory(transactions);
+        System.out.println("\nStatystyka kategorii:");
+        for (var entry : stats.entrySet()) {
+            System.out.printf("%-15s : %.2f zł\n", entry.getKey(), entry.getValue());
+        }
+    }
+    public void sortByDateDescending() {
+        transactions.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
+        System.out.println("Transakcje posortowane wg daty (od najnowszych):");
+        showAllTransactions();
+    }
+    public void sortByAmountDescending() {
+        transactions.sort((t1, t2) -> Double.compare(t2.getAmount(), t1.getAmount()));
+        System.out.println("Transakcje posortowane wg kwoty (malejąco):");
+        showAllTransactions();
+    }
+    public void saveBinary(String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(transactions);
+            System.out.println("Zapisano transakcje binarnie do pliku: " + filename);
+        } catch (IOException e) {
+            System.out.println("Błąd zapisu binarnego: " + e.getMessage());
+        }
+    }
+    public void loadBinary(String filename) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            transactions = (List<Transaction>) ois.readObject();
+            System.out.println("Wczytano transakcje z pliku binarnego: " + filename);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Błąd odczytu binarnego: " + e.getMessage());
+        }
+    }
 }
